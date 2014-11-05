@@ -1,0 +1,13 @@
+[user]
+	name = Magnus Lidén
+	email = mange@erlang.org
+[http]
+	proxy = www-proxy.ericsson.se:8080
+[alias]
+        ci = commit -m
+        co = checkout
+        st = status
+        br = branch
+        mb = checkout -b
+        db = branch -d
+        sm = submodule
