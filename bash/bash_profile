@@ -1,0 +1,96 @@
+# .bash_profile
+
+# echo "DBG [.bash_profile]: begin"
+
+
+EDITOR=emacs
+VISUAL="emacs -nw"
+CLEARCASE_MAKE_COMPAT=gnu
+#CCASE=/usr/local/ccase
+#VIEWS=$CCASE/vws/$USER
+
+GIT_AUTHOR_NAME="Magnus Lidén"
+GIT_AUTHOR_EMAIL=mange@erlang.org
+
+
+CC=gcc
+MAKEFLAGS=-j8
+
+
+
+PATH=$PATH:/usr/atria/bin
+PATH=$PATH:/opt/local/bin
+PATH=$PATH:/home/otp/bin
+PATH=$HOME/bin:$PATH
+
+PAGER=less
+LESS=-iMX
+
+## My paths ##
+#ESSIM_PATH=/ldisk/mange/essim/bin
+ESSIM_PATH=/ldisk/mange/btd/DX_BTDLINUX_1.1_CP1/btd/essim/bin
+RCS_TC_PATH=/ldisk/mange/rcs/gcc-toolchain/bin
+PATH=$ESSIM_PATH:$RCS_TC_PATH:$PATH
+COM_INC_DIR=/ldisk/mange/com_install/com-0/opt/com/inc
+
+GIT_TOP=/ldisk/mange/git
+ERL_TOP=/ldisk/mange/git/otp
+ERL_LIBS=/ldisk/mange/git
+
+## OPENSAF
+REPOSITORY=/ldisk/opensaf/repository
+SMFREPOSITORY=/ldisk/opensaf/repository
+SMF_BACKUP_DIR=/ldisk/opensaf/backup
+
+## ESSIM ##
+ESSIM_WORKSPACE=/ldisk/mange/essim/workspace
+ESSIM_LIB=/ldisk/mange/essim/ESSIM_LIB
+
+CC_ERTS=$ERL_TOP
+CC_LIBS=$ERL_TOP/../libraries
+PRINTER=otp01
+HTTP_PROXY=http://www-proxy.ericsson.se:8080
+
+export PRINTER HTTP_PROXY
+export ERL_TOP ERL_LIBS CC_ERTS CC_LIBS
+export CLEARCASE_MAKE_COMPAT CCASE VIEWS
+export PATH
+export CC MAKEFLAGS
+export VISUAL EDITOR PAGER LESS
+export SMFREPOSITORY REPOSITORY SMF_BACKUP_DIR
+export ESSIM_WORKSPACE ESSIM_LIB
+
+# Get the aliases and functions
+# echo "DBG [.bash_profile]: run .bashrc"
+
+
+# User specific environment and startup programs
+
+umask 022
+unset USERNAME
+
+# Aliases
+alias ll="ls -l"
+alias llt="ls -lrt"
+alias terminal="exo-open --launch TerminalEmulator"
+set audible-bell none
+
+alias start_sles="VBoxManage startvm sles_11_sp2"
+alias stop_sles="VBoxManage controlvm sles_11_sp2 poweroff"
+
+alias comte="cd $GIT_TOP/comte"
+alias otp="cd $ERL_TOP"
+alias safe="cd $GIT_TOP/otperic/safe"
+
+# Laptop
+export XPS13=elx21hr002-em.ki.sw.ericsson.se
+
+#'[\u@\h] \W $(__git_ps1 "(%s)")%> '
+which git > /dev/null
+if [ $? -eq 0 ]; then
+    export PS1='[\u@\h] \[\e[0;44m\]\W/\[\e[0;32m\]$(__git_ps1 " (%s)")\e[0m\n>'
+else
+   export PS1='[\u@\h] \W%> '
+fi
+
+# echo "DBG [.bash_profile]: end"
