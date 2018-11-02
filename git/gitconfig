@@ -1,13 +1,17 @@
 [user]
-	name = Magnus Lidén
-	email = mange@erlang.org
-[http]
-	proxy = www-proxy.ericsson.se:8080
+	name = Magnus Liden
+	email = magnus.liden@infovista.com
+[color]
+	ui = false
+	status = true
+[core]
+	autocrif = false
+	ignorecase = true
 [alias]
-        ci = commit -m
-        co = checkout
-        st = status
-        br = branch
-        mb = checkout -b
-        db = branch -d
-        sm = submodule
+	co = checkout
+	br = branch
+	st = status
+	ci = commit
+	unstage = reset HEAD --
+[color "status"]
+	meta = cyan black bold
