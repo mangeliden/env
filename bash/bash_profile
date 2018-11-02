@@ -1,0 +1,126 @@
+## Env
+TPDEV=/home/semali/git/pocket
+TFS_SERVER="http://tfs.ascom.ads:8080/tfs/DefaultCollection"
+TICKET_SERVER=ntseskrdp08.ascom.ads
+
+TP_APP_ROOT=/data/data/com.ascom.pocket
+TP_ROOT=/sdcard/pocket
+TP_SCRIPTS=$TP_ROOT/private/scripts
+TP_SCREENSHOTS=$TP_ROOT/screenshots
+TP_LOGS=$TP_ROOT/logfiles
+TP_LOG_REPORTS=$TP_ROOT/logfiles/reports
+TP_MAPSETS=$TP_ROOT/private/mapsets
+TP_CELLFILES=$TP_ROOT/private/cellfiles
+TP_CELLDB=$TP_ROOT/public/com.ascom.pocket.services.cellinfo
+TP_REL_APK=pocket-release.apk
+TP_DBG_APK=pocket-debug.apk
+TP_SPRINT_DIR=/home/semali/pocket_work/sprints
+
+export TPDEV
+export TFS_SERVER
+export TICKET_SERVER
+export TP_ROOT TP_SCRIPTS TP_LOGS TP_CELLDB TP_APK
+
+EDITOR="emacs -nw"
+export EDITOR
+
+## Android
+#Hierarchy Viewer Variable
+export ANDROID_HVPROTO=ddm
+
+##### Functions #######
+function tp_feature(){
+    local fdir=""
+    if echo "$1" | grep -q "_"; then
+        fdir="Pocket_$1_Maintenance"
+    else
+        fdir="Feature$1"
+    fi
+    cd $TPDEV/$fdir
+}
+export -f tp_feature
+
+function tp_sprint(){
+    local fdir="$1"
+    cd $TP_SPRINT_DIR/$fdir
+}
+export -f tp_sprint
+
+##function tp_logcat(){
+##    local args="Pocket:* JS:* SmokeTest:* AutoTest:* AndroidRuntime:* DEBUG:* Java:*"
+##    local cmd="adb logcat -v time -s $args"
+##    echo "Run: $cmd"
+##    $cmd
+##}
+##export -f tp_logcat
+
+function view_xml(){
+    tidy -xml -i $1 | less
+}
+export -f view_xml
+
+# Aliases
+alias tp_integration="cd $TPDEV/Integration"
+alias tp_screenshot=screenshot2
+alias tp_monitor=ddms
+alias tp_get_settings_db="adb pull $TP_APP_ROOT/private/settings.db"
+alias tp_get_vep_db="adb pull $TP_APP_ROOT/private/vepdb.db"
+alias tp_get_devicebuddy_db="adb pull $TP_APP_ROOT/private/devicebuddy.db"
+alias tp_get_remote_db="adb pull $TP_APP_ROOT/private/remote.db"
+alias tp_get_datacollection_db="adb pull $TP_APP_ROOT/private/datacollection.db"
+alias tp_get_tilecache_db="adb pull $TP_ROOT/cache/tilecache.db"
+#alias tp_install="date;ls -lh $TP_APK && adb install $TP_APK"
+#alias tp_uninstall="date;adb uninstall com.ascom.pocket"
+#alias tp_reinstall="date;tp_reinstall.sh"
+alias tp_cat_converted_script="adb shell 'cat /data/data/com.ascom.pocket/private/ConvertedScript.js'"
+alias tp_view_tclog="adb shell 'cat /sdcard/junitresults/TEST-all.xml' > /tmp/testresults.xml; xmllint --pretty 1 /tmp/testresults.xml"
+alias tp_ls_logs="adb shell ls -la $TP_LOGS;echo 'adb pull $TP_LOGS/'"
+alias tp_ls_scripts="adb shell ls -la $TP_SCRIPTS;echo 'adb pull $TP_SCRIPTS/'"
+alias tp_ls_reports="adb shell ls -la $TP_LOG_REPORTS;echo 'adb pull $TP_LOG_REPORTS/'"
+alias tp_ls_mapsets="adb shell ls -la $TP_MAPSETS;echo 'adb pull $TP_MAPSETS/'"
+alias tp_ls_apps="adb shell pm list packages | awk -F ':' '{print $2}'"
+alias tp_view_devconfig="find . -name 'Device*xml' | xargs less"
+alias tp_view_manifest="find . -name 'AndroidManifest.xml' | xargs tidy -xml -i "
+alias tp_start_pocket="adb shell am start -n com.ascom.pocket/.TcPocketProActivity"
+alias tp_stop_pocket="adb shell am force-stop com.ascom.pocket"
+alias tp_get_manual="wget http://jenkins.ascom.ads/view/All/job/TEMS_Pocket_User_Manual/lastSuccessfulBuild/artifact/TEMS_Pocket_User_Manual.pdf"
+alias tp_get_screenhots="adb pull /sdcard/Pictures/Screenhots"
+alias source_bashprofile="source /home/semali/.bash_profile"
+alias tp_update_environment="/home/semali/media/LOCAL-RD/SK_Pocket/development\ tools/script/SetupEnvironment.sh"
+alias tp_validate_ui_files="find . -name '*.ui' | xargs xmllint --noout --format"
+alias tp_addr2line='/development/android-ndk-r10d/toolchains/x86-4.9/prebuilt/linux-x86_64/bin/i686-linux-android-addr2line'
+alias tp_ls_procs='adb shell ps | grep ascom'
+
+alias tp_delete_device_logs="adb shell rm -f '/sdcard/pocket/logfiles/*.trp';adb shell rm -f '/sdcard/pocket/logfiles/*.pcap'"
+
+
+alias cifsmount='sudo mount -t cifs //ascom.ads/Skelleftea ~/mnt -o username=semali'
+
+license_server=10.138.69.60
+
+## Time
+export TIME_LOG=/home/semali/Documents/Tid/tid2016.log
+alias show_time_log='cat $TIME_LOG'
+alias add_job_arrival='echo -n "`date`," >> $TIME_LOG'
+alias add_job_leave='echo "`date`" >> $TIME_LOG'
+## Fun
+alias skeweather='weather --no-cache -m ESNS'
+
+
+# Path
+export PATH=/home/semali/Apps/sublime_text_2:$PATH
+export PATH=/home/semali/Apps/idea/bin:$PATH
+export PATH=/home/semali/bin:$PATH
+export PATH=/home/semali/git/scripts:$PATH
+export PATH=/home/semali/Apps/freewrap/linux64:$PATH
+export PATH=/development/android-ndk:$PATH
+export PATH=/development/android-sdk/build-tools/19.1.0:$PATH
+export PATH=/media/SEMALI/Data/Apps/android-studio/bin:$PATH
+export PATH=/media/SEMALI/Data/Apps/qt-creator/Tools/QtCreator/bin:$PATH
+
+export PROMPT_DIRTRIM=2
+. ~/bin/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=1
+#export PS1='[\h@\A]\w$(__git_ps1 " (%s)")\$ '
+
+export PS1='\[\033[0;37m\]\342\224\214\342\224\200$(if [[ $? != 0 ]]; then echo "[\[\033[0;31m\]\342\234\227\[\033[0;37m\]]"; fi)${debian_chroot:+[$debian_chroot]}\342\224\200[$(if [[ ${EUID} == 0 ]]; then echo "\[\033[0;31m\]\h"; else echo "\[\033[0;33m\]\u\[\033[0;37m\]@\[\033[0;96m\]\h"; fi)\[\033[0;37m\]]\342\224\200[\[\033[0;32m\]\w\[\033[0;37m\]]$(__git_ps1 "\342\224\200[%s]")\n\[\033[0;37m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#I") $PWD)'
